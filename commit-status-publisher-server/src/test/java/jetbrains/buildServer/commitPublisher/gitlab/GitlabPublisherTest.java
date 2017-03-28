@@ -57,6 +57,14 @@ public class GitlabPublisherTest extends HttpPublisherServerBasedTest {
     then(waitForRequest()).isNotNull().matches(String.format(".*/projects/own%%2Eer%%2Fpro%%2Eject/statuses/%s.*ENTITY:.*success.*Success.*", REVISION));
   }
 
+  public void shoud_work_with_subgroups() throws PublisherException, InterruptedException {
+    myVcsRoot.setProperties(Collections.singletonMap("url", "git@gitlab.gridsum.com:gdp/DataSocket/Plugins/RedirectServer.git"));
+    VcsRootInstance vcsRootInstance = myBuildType.getVcsRootInstanceForParent(myVcsRoot);
+    BuildRevision revision = new BuildRevision(vcsRootInstance, REVISION, "", REVISION);
+    myPublisher.buildFinished(myFixture.createBuild(myBuildType, Status.NORMAL), revision);
+    then(waitForRequest()).isNotNull().matches(String.format(".*/projects/gdp%2FDataSocket%2FPlugins%2FRedirectServer/statuses/%s.*ENTITY:.*success.*Success.*", REVISION));
+  }
+
   @BeforeMethod
   @Override
   protected void setUp() throws Exception {

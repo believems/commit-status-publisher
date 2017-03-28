@@ -8,7 +8,7 @@
         <td>
             <props:textProperty name="${keys.gitlabServer}" style="width:18em;"/>
             <span class="smallNote">
-                Format: <strong>http(s)://[hostname:port]/api/v3</strong>
+                Format: <strong>http(s)://[gitlab.gridsum.com:80]/api/v3</strong>
             </span>
             <span class="error" id="error_${keys.gitlabServer}"></span>
         </td>

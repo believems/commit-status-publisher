@@ -1,6 +1,7 @@
 package jetbrains.buildServer.commitPublisher;
 
 import com.intellij.openapi.diagnostic.Logger;
+import jetbrains.buildServer.commitPublisher.gitlab.GitlabSettings;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,9 +15,10 @@ import java.util.regex.Pattern;
 public class GitRepositoryParser {
   private static final Logger LOG = Logger.getInstance(GitRepositoryParser.class.getName());
   //git@host:user/repo
-  private static final Pattern SCP_PATTERN = Pattern.compile("git@[^:]+[:]([^/]+)/(.+)");
+  private static final Pattern SCP_PATTERN = Pattern.compile("git@[^:]+[:](.+)/(.+)");
   //ssh://git@host/user/repo
-  private static final Pattern SSH_PATTERN = Pattern.compile("ssh://(?:git@)?[^:]+(?::[0-9]+)?[:/]([^/:]+)/(.+)");
+  private static final Pattern SSH_PATTERN = Pattern.compile("ssh://(?:git@)?[^:]+(?::[0-9]+)?[:/]([^:]+)/(.+)");
+
 
   @Nullable
   public static Repository parseRepository(@NotNull String uri) {
@@ -63,5 +65,11 @@ public class GitRepositoryParser {
     if (repo.endsWith(".git"))
       repo = repo.substring(0, repo.length() - 4);
     return new Repository(owner, repo);
+  }
+
+  public static void main(String[] args) {
+    Repository repository=GitRepositoryParser.parseRepository("git@gitlab.gridsum.com:gdp/DataSocket/Plugins/RedirectServer.git");
+    System.out.println(repository);
+    System.out.println(GitlabSettings.encodeDots(repository.owner()));
   }
 }

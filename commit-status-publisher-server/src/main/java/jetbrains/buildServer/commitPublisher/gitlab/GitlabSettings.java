@@ -81,9 +81,8 @@ public class GitlabSettings extends BasePublisherSettings implements CommitStatu
    * used within project ids in URLs for some calls.
    */
   public static String encodeDots(@NotNull String s) {
-    if (!s.contains(".")
-        || TeamCityProperties.getBoolean("teamcity.commitStatusPublisher.gitlab.disableUrlEncodingDots"))
+    if (TeamCityProperties.getBoolean("teamcity.commitStatusPublisher.gitlab.disableUrlEncodingDots"))
       return s;
-    return s.replace(".", "%2E");
+    return s.replace(".", "%2E").replace("/","%2F");
   }
 }
